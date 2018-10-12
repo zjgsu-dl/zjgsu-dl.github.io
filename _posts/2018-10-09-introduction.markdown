@@ -53,17 +53,24 @@ model.evaluate(x_test, y_test)
 
 Tensorflow更新较快，很多书上的内容都已经过时，建议大家直接参考[官方文档][tf-docs]（[中文][tf-docs-cn]）来进行学习。
 
+## Python
+
+Python不是本课程的内容，但是本课程主要用Python来完成所以的编程任务，所以需要大家对Python有很好的了解，可以参考[《Python学习手册》][learning-python]来学习Python方面的知识。此外，深度学习中需要一些科学计算方面的编程知识，可以参考[《Python科学计算(第2版)》][scipy]，特别是其中[NumPy][]方面的内容。
+
 [anaconda]: https://anaconda.org/
 [cs231n]: http://cs231n.stanford.edu/
 [dlai]: https://www.deeplearning.ai/courses/
 [dlbook]: https://book.douban.com/subject/27087503/
+[learning-python]: https://book.douban.com/subject/6049132/
 [lee-course]: http://speech.ee.ntu.edu.tw/~tlkagk/courses_MLDS18.html
 [lee-pdf]: http://speech.ee.ntu.edu.tw/~tlkagk/slide/Tutorial_HYLee_Deep.pdf
 [lee-pptx]: http://speech.ee.ntu.edu.tw/~tlkagk/slide/Tutorial_HYLee_Deep.pptx
 [lee-slideshare]: http://www.slideshare.net/tw_dsconf/ss-62245351
 [nlp]: https://book.douban.com/subject/30236842/
+[numpy]: https://zhuanlan.zhihu.com/p/20878530
 [pdf_icon]: /assets/images/pdf.svg
 [pptx_icon]: /assets/images/pptx.svg
+[scipy]: https://book.douban.com/subject/26784317/
 [tensorflow]: https://www.tensorflow.org
 [tf-docs-cn]: https://tensorflow.google.cn/get_started/
 [tf-docs]: https://www.tensorflow.org/tutorials/
