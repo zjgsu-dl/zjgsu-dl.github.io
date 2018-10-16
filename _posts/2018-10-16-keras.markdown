@@ -1,0 +1,143 @@
+---
+layout: post
+title:  "Keras"
+date:   2018-10-16 13:40:00 +0800
+---
+
+[Keras][](κέρας)是一个high-level的神经网络API，支持[TensorFlow][]、[CNTK][]以及[Theano][]。它主要用来进行快速实验以验证想法。
+
+## 基本用法
+
+~~~ python
+import tensorflow as tf
+mnist = tf.keras.datasets.mnist
+
+(x_train, y_train),(x_test, y_test) = mnist.load_data()
+x_train, x_test = x_train / 255.0, x_test / 255.0
+
+model = tf.keras.models.Sequential([
+  tf.keras.layers.Flatten(),
+  tf.keras.layers.Dense(512, activation=tf.nn.relu),
+  tf.keras.layers.Dropout(0.2),
+  tf.keras.layers.Dense(10, activation=tf.nn.softmax)
+])
+model.compile(optimizer='adam',
+              loss='sparse_categorical_crossentropy',
+              metrics=['accuracy'])
+
+model.fit(x_train, y_train, epochs=5)
+model.evaluate(x_test, y_test)
+~~~
+
+## 模型(Model)
+
+Keras中的model定义了整个网络的结构，一般分为两类：
+
+- [Sequential 顺序模型][seq model]，多个网络层的线性堆叠。
+- [使用函数式 API 的 Model 类模型][func model]，用于定义复杂模型（如多输出模型、有向无环图，或具有共享层的模型）。
+
+## 核心层(Layer)
+
+模型是由多个层组成的，[Keras的Layer][keras layer]有很多公共的方法，可以对权重、配置等信息进行查询或设置。Keras有很多不同类型的层，我们这次课主要关注的是[核心层][core layer]。
+
+### 全连接层(Dense)
+
+`Dense`是普通的全连接层
+
+~~~ python
+keras.layers.Dense(units, activation=None, use_bias=True, kernel_initializer='glorot_uniform', bias_initializer='zeros', kernel_regularizer=None, bias_regularizer=None, activity_regularizer=None, kernel_constraint=None, bias_constraint=None)
+~~~
+
+其实现的功能为：`output = activation(dot(input, kernel) + bias)` 。
+
+~~~ python
+# 作为 Sequential 模型的第一层
+model = Sequential()
+model.add(Dense(32, input_shape=(16,)))
+# 现在模型就会以尺寸为 (*, 16) 的数组作为输入，
+# 其输出数组的尺寸为 (*, 32)
+
+# 在第一层之后，你就不再需要指定输入的尺寸了：
+model.add(Dense(32))
+~~~
+
+### 激活函数(Activation)
+
+激活函数可以通过设置单独的激活层实现，也可以在构造层对象时通过传递activation参数实现。不同激活函数的效果不同，可以参考[如何选择正确的激活函数][choose activations]。
+
+![Activation Functions][]
+
+### Dropout
+
+[Dropout][]在训练中每次更新时， 将输入单元的按比率随机设置为0， 这有助于防止过拟合。`rate`表示需要丢弃的输入比例。
+
+### Flatten
+
+将输入展平。不影响批量大小。
+
+~~~ python
+model = Sequential()
+model.add(Conv2D(64, 3, 3,
+                 border_mode='same',
+                 input_shape=(3, 32, 32)))
+# 现在：model.output_shape == (None, 64, 32, 32)
+
+model.add(Flatten())
+# 现在：model.output_shape == (None, 65536)
+~~~
+
+## 损失函数
+
+损失函数（或称目标函数、优化评分函数）是编译模型时所需的两个参数之一:
+
+~~~ python
+model.compile(loss='mean_squared_error', optimizer='sgd')
+~~~
+
+~~~ python
+from keras import losses
+
+model.compile(loss=losses.mean_squared_error, optimizer='sgd')
+~~~
+
+评价函数和损失函数相似，只不过评价函数的结果不会用于训练过程中。
+
+![Loss Function][losses]
+
+## 优化器
+
+优化器(optimizer)是编译Keras模型的所需的两个参数之一：
+
+~~~ python
+from keras import optimizers
+
+model = Sequential()
+model.add(Dense(64, kernel_initializer='uniform', input_shape=(10,)))
+model.add(Activation('tanh'))
+model.add(Activation('softmax'))
+
+sgd = optimizers.SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
+model.compile(loss='mean_squared_error', optimizer=sgd)
+~~~
+
+具体每种优化器的说明参见[相关的文档][optimizer]。
+
+## 数据集及已有模型
+
+Kera集成了常见的[数据集][datasets]以及已有[模型][models]，可以根据需要去使用。
+
+[activation functions]: /assets/images/activations.png
+[choose activations]: https://zhuanlan.zhihu.com/p/30510596
+[cntk]: https://github.com/Microsoft/cntk
+[core layer]: https://keras.io/zh/layers/core/
+[datasets]: https://keras.io/zh/datasets/
+[dropout]: http://www.cs.toronto.edu/~rsalakhu/papers/srivastava14a.pdf
+[func model]: https://keras.io/zh/getting-started/functional-api-guide/
+[keras layer]: https://keras.io/zh/layers/about-keras-layers/
+[keras]: https://keras.io/zh
+[losses]: /assets/images/losses.jpg
+[models]: https://keras.io/zh/applications/
+[optimizer]: https://keras.io/zh/optimizers/
+[seq model]: https://keras.io/zh/getting-started/sequential-model-guide
+[tensorflow]: https://github.com/tensorflow/tensorflow
+[theano]: https://github.com/Theano/Theano
