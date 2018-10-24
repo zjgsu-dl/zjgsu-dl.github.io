@@ -1,0 +1,25 @@
+---
+layout: post
+title:  "CNN"
+date:   2018-10-23 13:40:00 +0800
+---
+
+对于输入图像较大的网络，全连接层会有非常多的权重需要进行计算（对于300x300、第一层有1000个节点的彩色图像，有9x10<sup>7</sup>个权重），这样的全连接层非常浪费并且很容易导致过拟合。
+
+![全连接][fc]
+
+CNN(卷积神经网络)中每个节点只和前一层的一个小区域相连，并且权重可以重用，因此可以大大减少权重的数量。
+
+![CNN][cnn]
+
+CNN通常和全连接层结合使用，CNN部分通过多次的卷积和池化，将结果传给全连接层继续处理：
+
+![CNN 结构][cnn_arch]
+
+Keras的[卷积层][conv]和[池化层][pooling]参见其文档。
+
+[cnn]: /assets/images/cnn.jpg
+[cnn_arch]: /assets/images/cnn_arch.png
+[conv]: https://keras.io/layers/convolutional/
+[fc]: /assets/images/fc.jpg
+[pooling]: https://keras.io/layers/pooling/
