@@ -22,7 +22,6 @@ url: "https://dl.zjgsu.xyz" # the base hostname & protocol for your site, e.g. h
 
 twitter_username: hanjianwei
 github_username:  zjgsu-dl
-future: true
 
 # Build settings
 markdown: kramdown
